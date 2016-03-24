@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Azure Location="East US" StorageAccountName="blprdstorage" VNetName="BroadleafAzureEast" AffinityGroup="PortalProd-Azure">
+  <ServiceAccounts>
+    <ServiceAccount UserName="superadmin" Password="ARPAnet#1969" Type="WindowsLocal" Create="No" />
+    <ServiceAccount UserName="tim.song" Password="Password1!" Type="WindowsDomain" Create="No" />
+    <ServiceAccount UserName="BROADLEAF\SQLSvc1" Password="Password1!" Type="SQL" />
+    <ServiceAccount UserName="BROADLEAF\SQLSvc2" Password="Password1!" Type="SQL" />
+    <ServiceAccount UserName="BROADLEAF\SQLInstall" Password="Password1!" Type="DBA" />
+  </ServiceAccounts>
+  <AzureVNet CreateVNET="false" NetworkConfigFileName="NetworkConfig.xml" />
+  <AzureVMGroups>
+    <VMRole Name="DomainControllers" ServiceName="BLDC2" SubnetNames="AzureAdmin" ServiceAccountName="BROADLEAF\tim.song">
+	 <AzureVM Name="BLDC2" DCType="NewForest" VMSize="Small" ImageName="Windows Server 2012 R2 Datacenter" />
+    </VMRole>
+    <VMRole Name="WindowsServerEmployee" ServiceName="bls-employee-production" HighAvailabilityType="" AvailabilitySet="bls-employee-prd" SubnetNames="AzureProd" ServiceAccountName="superadmin">	 
+	 <AzureVM Name="azweb-emp-prd01" Type="PRIMARY" VMSize="Large" ImageName="Windows Server 2012 R2 Datacenter">
+	 </AzureVM>
+	 <AzureVM Name="azweb-emp-prd02" Type="SECONDARY" VMSize="Large" ImageName="Windows Server 2012 R2 Datacenter">	 
+	 </AzureVM>
+    </VMRole>
+    <VMRole Name="WindowsServerStudent" ServiceName="bls-student-production" HighAvailabilityType="" AvailabilitySet="bls-student-prd" SubnetNames="AzureProd" ServiceAccountName="superadmin">	 
+	 <AzureVM Name="azweb-stu-prd01" Type="PRIMARY" VMSize="Large" ImageName="Windows Server 2012 R2 Datacenter">
+	 </AzureVM>
+	 <AzureVM Name="azweb-stu-prd02" Type="SECONDARY" VMSize="Large" ImageName="Windows Server 2012 R2 Datacenter">
+	 </AzureVM>
+    </VMRole>
+  </AzureVMGroups>
+  <ActiveDirectory Domain="BROADLEAF" DnsDomain="broadleaf.local" DomainControllerVM="BLDC2" ServiceAccountName="BROADLEAF\tim.song" />
+</Azure>
